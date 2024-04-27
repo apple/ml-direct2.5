@@ -1,0 +1,62 @@
+# multiview-diffusion model configs
+model:
+  # pretrained model path
+  mvnorm_pretrain_path: '/path/to/checkpoints/mvnormal_finetune_sd21b'
+  mvtexture_pretrain_path: '/path/to/checkpoints/mvrgb_normalcond_sd21b'
+  base_model: 'stabilityai/stable-diffusion-2-1-base'
+  # general model configs
+  num_views: 4
+  infer_steps: 50
+  # text-to-normal model configs
+  normal_res: 256
+  init_size: 0.8
+  # normal-conditioned texturing model configs
+  texture_res: 256
+  negative_prompt: 'ugly, dark, bad anatomy, blurry, cartoon, pixelated obscure, unnatural colors, poor lighting, dull, unclear, cropped, lowres, low quality, artifacts, duplicate, morbid, mutilated, poorly drawn face, deformed, dehydrated, bad proportions'
+  texture_model_background: 'gray'     # 'gray', 'random gray', 'blue', 'black', 'random noise'
+  superresolution: false
+
+
+# meshing optimization configs
+mesh_opt:
+  space_carving: true
+  space_carving_res: 64
+  normal_steps: 200
+  texture_steps: 100
+  render_type: 'texture'  # 'texture' or 'vertices'
+  texture_map_res: 1024
+  activate: 'sigmoid'
+  use_rendered_norm: true
+  lap_smooth: 0.1
+  # iterative configs
+  norm_iters: 1
+  tex_iters: 1
+  norm_strengths: [0, 1.0]
+  tex_strengths: [0, 1.0]
+  # weights
+  l1_weight: 1.
+  ssim_weight: 10.
+  tv_weight: 1.0
+  init_texture: false
+
+# camera parameters
+iterative_camera:
+  fov: 60.
+  azimuth_span: 360
+  normal:
+    elevations: [0]
+    azimuth_starts: [0]
+    radius: [1.5]
+  texture:
+    elevations: [0, -22.5]
+    azimuth_starts: [0, 0]
+    radius: [1.5, 1.5]   
+
+render_camera:
+  nframe: 120
+  elevation: 0
+  azimuth_start: 0
+  azimuth_end: 360
+  fov: 60.
+  radius: 1.5
+
